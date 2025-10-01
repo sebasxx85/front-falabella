@@ -38,3 +38,5 @@ npm run dev       # servidor de desarrollo
 npm run build     # compilar para producción
 npm run preview   # previsualizar la build
 npm test          # PENDIENTE (se agregará con Jest)
+
+## Test dentro de carpeta _test_
