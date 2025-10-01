@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1759338294998" clover="3.2.0">
-  <project timestamp="1759338294998" name="All files">
+<coverage generated="1759338377561" clover="3.2.0">
+  <project timestamp="1759338377562" name="All files">
     <metrics statements="48" coveredstatements="48" conditionals="22" coveredconditionals="19" methods="15" coveredmethods="15" elements="85" coveredelements="82" complexity="0" loc="48" ncloc="48" packages="1" files="4" classes="4"/>
     <file name="app-footer.ts" path="C:\Users\sebas\OneDrive\Desktop\frontFalabella\front-falabella\src\components\app-footer.ts">
       <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
