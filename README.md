@@ -18,5 +18,30 @@ cd front-falabella
 npm install
 npm run dev
 
+## Componentes
+
+<app-header> → cabecera principal con branding Falabella.
+
+<search-input> → input + botón de búsqueda de usuario de GitHub.
+
+<user-card> → tarjeta que muestra avatar, nombre, bio, repos públicos y link al perfil.
+
+<app-footer> → pie de página con texto personalizable.
 
 
+## Variables de entorno
+
+El proyecto utiliza los siguientes archivos .env:
+
+.env.development → configuración en desarrollo
+
+.env.production → configuración en producción
+
+.env → valores comunes
+
+
+## Scripts
+npm run dev       # servidor de desarrollo
+npm run build     # compilar para producción
+npm run preview   # previsualizar la build
+npm test          # PENDIENTE (se agregará con Jest)
