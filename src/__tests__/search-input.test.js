@@ -1,27 +1,52 @@
-import { fireEvent } from "@testing-library/dom";
-import "../components/search-input.ts";
+import '../components/search-input';
 
-test("<search-input> emite 'search' con { username }", () => {
-  document.body.innerHTML = `<search-input></search-input>`;
-  const el = document.querySelector("search-input");
+describe('<search-input>', () => {
+  let el;
 
-  const root = el.shadowRoot ?? el;
-  const input = root.querySelector("input");
-  const form  = root.querySelector("form") || root.querySelector("button") || root;
+  beforeEach(() => {
+    el = document.createElement('search-input');
+    document.body.appendChild(el);
+  });
 
-  const spy = jest.fn();
-  el.addEventListener("search", spy);
+  afterEach(() => {
+    el.remove();
+  });
 
-  input.value = "octocat";
-  // si tienes form:
-  if (form.tagName?.toLowerCase() === "form") {
-    fireEvent.submit(form);
-  } else {
-    // si usas botón:
-    fireEvent.click(form);
-  }
+  test('emite evento "search" al enviar con username válido', () => {
+    const input = el.shadowRoot.querySelector('input');
+    input.value = 'octocat';
+    const form = el.shadowRoot.querySelector('form');
 
-  expect(spy).toHaveBeenCalledTimes(1);
-  const ev = spy.mock.calls[0][0];
-  expect(ev.detail).toEqual({ username: "octocat" });
+    const handler = jest.fn();
+    el.addEventListener('search', handler);
+
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(handler.mock.calls[0][0].detail).toEqual({ username: 'octocat' });
+  });
+
+  test('no emite evento si input está vacío', () => {
+    const input = el.shadowRoot.querySelector('input');
+    input.value = '   '; // solo espacios
+    const form = el.shadowRoot.querySelector('form');
+
+    const handler = jest.fn();
+    el.addEventListener('search', handler);
+
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  test('deshabilita el botón cuando loading=true', () => {
+    const button = el.shadowRoot.querySelector('button');
+    expect(button.disabled).toBe(false);
+
+    el.loading = true;
+    expect(button.disabled).toBe(true);
+
+    el.loading = false;
+    expect(button.disabled).toBe(false);
+  });
 });
