@@ -1,23 +1,27 @@
 import './style.css'
-
-// Config (.env)
 import { CONFIG } from './config/config'
 
-// Servicio (GET https://api.github.com/users/{username})
+// Servicio GET https://api.github.com/users/{username}
 import { githubApi } from './services/githubApi'
 
-// Registrar Web Components
+//Web Components
 import './components/app-header'
 import './components/app-footer'
 import './components/search-input'
 import './components/user-card'
 
-// Logs para verificar las envs
+// Helpers para forzar un mínimo de duración del loading
+const sleep = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
+
+async function withMinDelay<T>(promise: Promise<T>, minMs = 600): Promise<T> {
+  const [result] = await Promise.all([promise, sleep(minMs)]);
+  return result;
+}
+
 console.log('API_BASE =>', CONFIG.API_BASE)
 console.log('API_TIMEOUT_MS =>', CONFIG.API_TIMEOUT_MS)
 
-// Referencia al componente <user-card>
-const userCard = document.querySelector('user-card') as any;
+const userCard = document.querySelector('user-card') as (HTMLElement & any);
 
 // Escuchar el CustomEvent 'search' emitido por <search-input>
 document.addEventListener('search', async (ev) => {
@@ -25,18 +29,26 @@ document.addEventListener('search', async (ev) => {
   const username: string | undefined = ev?.detail?.username;
   if (!username) return;
 
-  try {
-    userCard.state = 'loading';
-    const u = await githubApi.getUser(username);
-    userCard.profile = {
-      avatar_url: u.avatar_url,
-      name: u.name,
-      bio: u.bio,
-      public_repos: u.public_repos,
-      html_url: u.html_url,
-    };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Fallo desconocido';
-    userCard.errorMessage = message;
+  // La tarjeta está oculta al inicio
+  if (userCard.hasAttribute('hidden')) {
+    userCard.removeAttribute('hidden');
   }
+
+  try {
+  userCard.state = 'loading';
+
+  const u = await withMinDelay(githubApi.getUser(username), 600);
+
+  userCard.profile = {
+    avatar_url: u.avatar_url,
+    name: u.name,
+    bio: u.bio,
+    public_repos: u.public_repos,
+    html_url: u.html_url,
+  };
+} catch (err) {
+  const message = err instanceof Error ? err.message : 'Fallo desconocido';
+  userCard.errorMessage = message;
+}
+
 });

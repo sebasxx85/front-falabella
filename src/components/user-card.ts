@@ -44,7 +44,7 @@ export class UserCard extends HTMLElement {
       @media (max-width:600px){ .row{ flex-direction:column; align-items:flex-start; } img{ width:84px;height:84px; } }
     `;
 
-    let content = `<div class="card muted">Ingrese un usuario…</div>`;
+    let content = ``;
 
     if (this._state === 'loading') {
       content = `
