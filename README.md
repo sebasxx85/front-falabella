@@ -11,6 +11,7 @@ Node.js: v22.12.0
 npm: v10.9.0
 Vite: v7.1.7  
 TypeScript: v5.6.2  
+Jest: 30.2.0
 
 ## bash
 git clone https://github.com/sebasxx85/front-falabella.git
