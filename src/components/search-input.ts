@@ -7,16 +7,42 @@ export class SearchInput extends HTMLElement {
     const root = this.attachShadow({ mode: 'open' });
     root.innerHTML = `
       <style>
-        :host { display:block; max-width:640px; margin:16px auto; font-family: system-ui, sans-serif; }
+        :host { display:block; }
+        .wrap{ max-width:960px; margin:16px auto; padding:0 16px; }
         form { display:flex; gap:8px; }
-        input { flex:1; padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; }
-        button { padding:10px 14px; border-radius:8px; border:1px solid #111827; background:#111827; color:white; cursor:pointer; }
-        button:disabled { opacity:.6; cursor:not-allowed; }
+        label{ position:absolute; left:-9999px; } /* accesible pero oculto */
+        input {
+          flex:1;
+          padding:10px 12px;
+          border:1px solid var(--border);
+          border-radius: var(--radius);
+          background:#fff;
+          outline:none;
+        }
+        input:focus{ border-color: var(--brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent); }
+        button{
+          padding:10px 14px;
+          border-radius: var(--radius);
+          border:1px solid var(--brand);
+          background: var(--brand);
+          color:#fff;
+          cursor:pointer;
+          transition: filter .15s ease;
+        }
+        button:hover{ filter: brightness(0.95); }
+        button:disabled{ opacity:.65; cursor:not-allowed; }
+        @media (max-width: 640px){
+          form{ flex-direction:column; }
+          button{ width:100%; }
+        }
       </style>
-      <form novalidate>
-        <input type="text" name="username" placeholder="Ingresa usuario de GitHub (ej: octocat)" />
-        <button type="submit">Buscar</button>
-      </form>
+      <div class="wrap">
+        <form novalidate>
+          <label for="username">Usuario de GitHub</label>
+          <input id="username" type="text" name="username" placeholder="Ingresa usuario de GitHub (ej: octocat)" />
+          <button type="submit">Buscar</button>
+        </form>
+      </div>
     `;
   }
 
@@ -36,7 +62,7 @@ export class SearchInput extends HTMLElement {
     });
   }
 
-  // API pública opcional para deshabilitar mientras carga
+  // API pública para deshabilitar mientras carga
   set loading(v: boolean) {
     if (!this.button) return;
     this.button.disabled = v;

@@ -25,26 +25,29 @@ export class UserCard extends HTMLElement {
 
   private render() {
     const css = `
-      :host { display:block; max-width:720px; margin:16px auto; font-family: system-ui, sans-serif; }
-      .card { border:1px solid #e5e7eb; border-radius:12px; padding:16px; box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+      :host { display:block; }
+      .wrap{ max-width:960px; margin:16px auto; padding:0 16px; }
+      .card { border:1px solid var(--border); border-radius: var(--radius); padding:16px; box-shadow: var(--shadow-sm); background:#fff; }
       .row { display:flex; gap:16px; align-items:center; }
       img { width:96px; height:96px; border-radius:50%; object-fit:cover; }
       h2 { margin:0 0 6px 0; font-size:1.25rem; }
-      p { margin:4px 0; color:#374151; }
+      p { margin:4px 0; color:var(--text); }
       a { color:#2563eb; text-decoration:none; }
       a:hover { text-decoration:underline; }
-      .muted { color:#6b7280; }
-      @media (max-width:600px){ .row{ flex-direction:column; align-items:flex-start; } img{ width:80px;height:80px; } }
+      .muted { color:var(--muted); }
 
-      /* Spinner reutilizable dentro del componente */
-      .spinner { width:28px; height:28px; border-radius:50%; border:3px solid #e5e7eb; border-top-color:#111827; animation: spin .8s linear infinite; }
+      /* Spinner con color de marca */
+      .spinner { width:28px; height:28px; border-radius:50%; border:3px solid var(--border); border-top-color: var(--brand); animation: spin .8s linear infinite; }
       @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Responsive */
+      @media (max-width:600px){ .row{ flex-direction:column; align-items:flex-start; } img{ width:84px;height:84px; } }
     `;
 
-    let html = `<div class="card muted">Ingrese un usuario…</div>`;
+    let content = `<div class="card muted">Ingrese un usuario…</div>`;
 
     if (this._state === 'loading') {
-      html = `
+      content = `
         <div class="card" aria-busy="true">
           <div style="display:flex;align-items:center;gap:8px;">
             <div class="spinner" aria-hidden="true"></div>
@@ -54,12 +57,12 @@ export class UserCard extends HTMLElement {
     }
 
     if (this._state === 'error') {
-      html = `<div class="card" role="alert" style="color:#b91c1c;">Error: ${this._error || 'Usuario no encontrado'}</div>`;
+      content = `<div class="card" role="alert" style="color:#b91c1c;">Error: ${this._error || 'Usuario no encontrado'}</div>`;
     }
 
     if (this._state === 'ready' && this._profile) {
       const u = this._profile;
-      html = `
+      content = `
         <article class="card">
           <div class="row">
             <img alt="Avatar" src="${u.avatar_url}">
@@ -73,7 +76,7 @@ export class UserCard extends HTMLElement {
         </article>`;
     }
 
-    this.shadowRoot!.innerHTML = `<style>${css}</style>${html}`;
+    this.shadowRoot!.innerHTML = `<style>${css}</style><div class="wrap">${content}</div>`;
   }
 }
 
