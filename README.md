@@ -25,7 +25,6 @@ npm run dev
 <user-card> → tarjeta que muestra avatar, nombre, bio, repos públicos y link al perfil.
 <app-footer> → pie de página con texto personalizable.
 
-
 ## Variables de entorno
 El proyecto utiliza los siguientes archivos .env:
 
@@ -37,6 +36,11 @@ El proyecto utiliza los siguientes archivos .env:
 npm run dev       # servidor de desarrollo
 npm run build     # compilar para producción
 npm run preview   # previsualizar la build
-npm test          # PENDIENTE (se agregará con Jest)
+npm test          # con Jest
 
 ## Test dentro de carpeta _test_
+smoke.test.js → test mínimo para verificar que Jest y jsdom funcionan.
+app-header.test.js → pruebas de renderizado del <app-header>.
+app-footer.test.js → pruebas de renderizado del <app-footer>.
+search-input.test.js → pruebas de evento search en <search-input>.
+user-card.test.js → pruebas de los estados (loading, ready, error) en <user-card>.
