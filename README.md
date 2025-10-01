@@ -17,3 +17,6 @@ git clone https://github.com/sebasxx85/front-falabella.git
 cd front-falabella
 npm install
 npm run dev
+
+
+
